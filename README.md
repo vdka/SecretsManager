@@ -34,29 +34,28 @@ source code, no need for an import.
 import struct Foundation.Data
 
 private func secret(_ secret: String) -> String {
-    let decoded = Data(base64Encoded: secret).flatMap({ String(data: $0, encoding: .utf8) })
-    guard let decoded else {
+    let data = Data(base64Encoded: secret)
+    guard let data else {
         fatalError("Failed to decode a secret!")
     }
 
-    func decrypt(_ text: String) -> String {
-        let text = Array(text.utf8)
-        let key = Data(base64Encoded: "JkHV4wqxAVyG3hgGRJrkFIrytVCkFZDAYgLJ7gEhgymcsfKTa2GbyIBowoxaxGdZQcyPkFjNRcGccfY/ku1Uqg==")
+    func decrypt(_ data: Data) -> String {
+        let key = Data(base64Encoded: "JbiOFqC+jH3l8pwCLE4Nca4f19M7YAbeTUo7rhnSSG7ctZMlc+dg5FI9o3zrSbCgFLtDd0uC9EcCC+jd6hlVDA==")!
         var output: [UTF8.CodeUnit] = []
-        for (offset, ch) in text.enumerated() {
+        for (offset, ch) in data.enumerated() {
             output.append(ch ^ key[offset % key.count])
         }
         return String(bytes: output, encoding: .utf8)!
     }
 
-    return decrypt(decoded)
+    return decrypt(data)
 }
 
 enum Secrets {
-    static let apiClientSecret = secret("TjOTrzz9cS/Bj0h1AcuAffqU4QPIeuOJVHamnlh15UHQ/7H1Ihf5rtUS9/5sqgRuc4jCwjqBCfLxApxK06s68w==")
-    static let analyticsKey = secret("QiC+0D3gd2nNmW9IN8ucQsCK3xr9J9+0AFenqUp570Sv3JnXKhHImuYag/8OjDY9B57c1T6/BPjlGJgKxtkN/g==")
-    static let backendKey = secret("bTali37DUzThkUBlFv7ZZKvFhgHKZ8GMF02j03NZu0z4+5reElSpu9cNk9wRiR8WOY23+BauAbPbSMtnwJsV3Q==")
-    static let loggerKey = secret("SRbiulv6Zm7jkHtQLuC2cOexwT3DVtOTIHL7inFr72Wp/7G+Owu6qfM799Q+lCB2bOHdojCIeu6hONlr/oIg+g==")
+    static let apiClientSecret = secret("TcrIWpby/A6io8xxaR9pGN55g4BXD3WXez5U3kCGLgaQ+9BDOpECggdHlg7dJ9OXJv8OJSnOuHRveIKoq187VQ==")
+    static let analyticsKey = secret("QdnlJZfv+kiutetMXx91J+RnvZliUkmqLx9V6VKKJAPv2PhhMpcztjRP4g+/AeHEUukQMi3wtX57Yobovi0MWA==")
+    static let backendKey = secret("bs/+ftTM3hWCvcRhfiowAY8o5IJVEleSOAVRk2uqcAu4//toCtJSlwVY8iygBMjvbPp7HwXhsDVFMtWFuG8Uew==")
+    static let loggerKey = secret("Su+5T/H160+AvP9URjRfFcNco75cI0WNDzoJymmYJCLp+9AII41BhSFuliSPGfePOZYRRSPHy2g/QseJhnYhXA==")
 }
 ```
 
