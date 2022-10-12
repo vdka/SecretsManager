@@ -70,6 +70,7 @@ var keypairs = lines
         guard splits.count == 2 else {
             // If the line is simply `export ORG_KEY` we look to the environment for a value
             guard let value = ProcessInfo.processInfo.environment[String(splits[0])] else {
+                print("warning: expected to find environment value for key \(splits[0])")
                 return nil
             }
             return (key: key.lowercased().camelized, value: value)
