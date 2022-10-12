@@ -67,16 +67,17 @@ var keypairs = lines
                 key = key.dropFirst()
             }
         }
-        guard splits.count == 2 else {
-            // If the line is simply `export ORG_KEY` we look to the environment for a value
-            guard let value = ProcessInfo.processInfo.environment[String(splits[0])] else {
-                print("warning: expected to find environment value for key \(splits[0])")
-                return nil
-            }
-            return (key: key.lowercased().camelized, value: value)
+
+        let value: String
+        if splits.count == 2 {
+            value = splits[1].trimmingCharacters(in: quotesCharacterSet)
+        } else if let envValue = ProcessInfo.processInfo.environment[String(splits[0])] {
+            value = envValue
+        } else {
+            print("warning: expected to find environment value for key \(splits[0])")
+            return nil
         }
 
-        let value = splits[1].trimmingCharacters(in: quotesCharacterSet)
         longestSecret = max(longestSecret, value.utf8.count)
         return (key: key.lowercased().camelized, value: String(value))
     }
