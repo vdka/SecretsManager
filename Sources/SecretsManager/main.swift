@@ -36,7 +36,7 @@ guard let outPath else {
 // MARK: - Read & Parse file
 
 guard FileManager.default.fileExists(atPath: envPath) else {
-    // Success, the env file is empty, therefore we are done?
+    print("Warning: No .env file exists at path \(envPath)")
     exit(0)
 }
 
@@ -83,7 +83,10 @@ var keypairs = lines
     }
 
 // Success, the env file has no secrets, therefore we are done?
-guard !keypairs.isEmpty else { exit(0) }
+guard !keypairs.isEmpty else {
+    print("Warning: No keys found in env file at path \(envPath)")
+    exit(0) 
+}
 
 // Generate a random cypher equal in length to the longest secret
 var cypher = Data(count: longestSecret)
