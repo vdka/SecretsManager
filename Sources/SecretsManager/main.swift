@@ -22,13 +22,13 @@ let envPath = CommandLine.arguments[safe: 1]
 let outPath = CommandLine.arguments[safe: 2]
 
 guard let envPath else {
-    print("Error: Missing expected argument '<env-path>'")
+    print("error: Missing expected argument '<env-path>'")
     print(usage)
     exit(1)
 }
 
 guard let outPath else {
-    print("Error: Missing expected argument '<out-path>'")
+    print("error: Missing expected argument '<out-path>'")
     print(usage)
     exit(1)
 }
@@ -36,7 +36,7 @@ guard let outPath else {
 // MARK: - Read & Parse file
 
 guard FileManager.default.fileExists(atPath: envPath) else {
-    print("Warning: No .env file exists at path \(envPath)")
+    print("warning: No .env file exists at path \(envPath)")
     exit(0)
 }
 
@@ -84,7 +84,7 @@ var keypairs = lines
 
 // Success, the env file has no secrets, therefore we are done?
 guard !keypairs.isEmpty else {
-    print("Warning: No keys found in env file at path \(envPath)")
+    print("warning: No keys found in env file at path \(envPath)")
     exit(0) 
 }
 
