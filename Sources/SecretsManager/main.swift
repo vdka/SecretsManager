@@ -75,7 +75,7 @@ var keypairs = lines
             value = envValue
         } else {
             print("warning: expected to find environment value for key \(splits[0])")
-            return nil
+            value = "" // If we've got `export KEY` with no value, it's likely intentionally left blank
         }
 
         longestSecret = max(longestSecret, value.utf8.count)
@@ -156,10 +156,18 @@ let swiftSecretsEnum = """
     """
 
 let swiftFile = swiftHeader + swiftSecretsEnum
-let data = swiftFile.data(using: .utf8)
-FileManager.default.createFile(atPath: outPath, contents: data)
+guard let data = swiftFile.data(using: .utf8) else {
+    print("warning: Generated file failed to encode into UTF8")
+    exit(1)
+}
 
-print("Output at \(outPath)")
+let url = URL(filePath: outPath)
+do {
+    try data.write(to: url)
+    print("Output at \(outPath)")
+} catch {
+    print("error: Writing file failed with: \(error.localizedDescription)")
+}
 
 // MARK: - Extensions
 
