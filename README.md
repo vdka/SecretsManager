@@ -90,6 +90,21 @@ plugins: [
 ]
 ```
 
+### Xcode Cloud
+
+When running in Xcode cloud you will want the secret values to come from the actual environment. In 
+order to tell the plugin which keys to read from the environment from you can create a `.env` file 
+that exports only the keys without associated values.
+
+```bash
+#prefix ORG
+
+export ORG_API_CLIENT_SECRET
+export ORG_ANALYTICS_KEY
+export ORG_BACKEND_KEY
+export ORG_LOGGER_KEY
+```
+
 ## Security
 
 This package doesn't aim to keep your Secrets safe from intentional attacks. It's aim is to make it
