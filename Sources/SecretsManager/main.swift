@@ -161,7 +161,7 @@ guard let data = swiftFile.data(using: .utf8) else {
     exit(1)
 }
 
-let url = URL(filePath: outPath)
+let url = URL(fileURLWithPath: outPath)
 do {
     try data.write(to: url)
     print("Output at \(outPath)")

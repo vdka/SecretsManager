@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "SecretsManager",
-    platforms: [.macOS(.v13)],
+    platforms: [.iOS(.v14), .macOS(.v13)],
     products: [
         .executable(name: "SecretsManager", targets: ["SecretsManager"]),
         .plugin(name: "SecretsManagerPlugin", targets: ["SecretsManagerPlugin"]),
